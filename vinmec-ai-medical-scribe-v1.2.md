@@ -3,7 +3,7 @@
 
 > **Phiên bản:** 1.2 | **Ngày:** Tháng 4, 2026 | **Mức độ:** Confidential — Dành cho Nhà đầu tư & Ban Lãnh đạo
 >
-> **Thay đổi so với v1.1:** Thống nhất số liệu WER; giải quyết FPT.AI API qua DPA; điều chỉnh timeline fine-tuning STT; bổ sung consent workflow đầy đủ; bổ sung phân bổ trách nhiệm pháp lý; bổ sung challenge code-switching Việt–Anh; kế hoạch adoption bác sĩ chi tiết.
+> **Thay đổi so với v1.1:** Thống nhất số liệu WER (Word Error Rate); giải quyết FPT.AI API (Application Programming Interface) qua DPA (Data Processing Agreement); điều chỉnh timeline fine-tuning STT (Speech-to-Text); bổ sung consent workflow đầy đủ; bổ sung phân bổ trách nhiệm pháp lý; bổ sung challenge code-switching Việt–Anh; kế hoạch adoption bác sĩ chi tiết.
 
 ---
 
@@ -12,7 +12,7 @@
 1. [Project Overview](#1-project-overview)
 2. [Enterprise Context](#2-enterprise-context)
 3. [Deployment Choice](#3-deployment-choice)
-4. [Cost Analysis — MVP & Growth](#4-cost-analysis--mvp--growth)
+4. [Cost Analysis — Minimum Viable Product (MVP) & Growth](#4-cost-analysis--minimum-viable-product-mvp--growth)
 5. [Optimization Plan](#5-optimization-plan)
 6. [Reliability Plan](#6-reliability-plan)
 7. [Future Roadmap](#7-future-roadmap)
@@ -24,7 +24,7 @@
 
 ### 1.1 Bài toán cốt lõi
 
-Vinmec vận hành theo mô hình bệnh viện quốc tế với tiêu chuẩn JCI. Mỗi ca khám kéo dài trung bình **15 phút**, nhưng thực tế cho thấy:
+Vinmec vận hành theo mô hình bệnh viện quốc tế với tiêu chuẩn JCI (Joint Commission International). Mỗi ca khám kéo dài trung bình **15 phút**, nhưng thực tế cho thấy:
 
 | Hoạt động | Thời gian trung bình | % tổng ca khám |
 |---|---|---|
@@ -43,10 +43,10 @@ Hệ thống sử dụng AI để **tự động chuyển đổi cuộc hội th
 Bác sĩ ↔ Bệnh nhân (hội thoại tự nhiên — tiếng Việt + tiếng Anh y tế xen lẫn)
          ↓
 [AI Medical Scribe Pipeline]
-Microphone → Speech-to-Text → NLP/LLM Processing → Structured Note
+Microphone → Speech-to-Text → Natural Language Processing (NLP) / Large Language Model (LLM) Processing → Structured Note
          ↓
 [HIS Integration]
-SOAP Note → ICD-10 Codes → HIS/EMR → Bác sĩ xem xét & ký duyệt
+SOAP (Subjective, Objective, Assessment, Plan) Note → ICD-10 (International Classification of Diseases, Tenth Revision) Codes → HIS (Hospital Information System) / EMR (Electronic Medical Record) → Bác sĩ xem xét & ký duyệt
 ```
 
 ### 1.3 Người dùng chính
@@ -62,9 +62,9 @@ SOAP Note → ICD-10 Codes → HIS/EMR → Bác sĩ xem xét & ký duyệt
 
 **3 kỹ năng cốt lõi đã được kiểm chứng:**
 
-1. **Speech-to-Text Pipeline** — Tích hợp Whisper với xử lý tiếng Việt; accuracy ~92% cho tiếng Việt phổ thông; ~75–80% cho thuật ngữ chuyên khoa y tế chưa qua fine-tune (xem chi tiết mục 1.5 và 6.6)
+1. **Speech-to-Text (STT) Pipeline** — Tích hợp Whisper với xử lý tiếng Việt; accuracy ~92% cho tiếng Việt phổ thông; ~75–80% cho thuật ngữ chuyên khoa y tế chưa qua fine-tune (xem chi tiết mục 1.5 và 6.6)
 2. **LLM Structured Extraction** — Prompt engineering với Claude/GPT-4 để trích xuất SOAP note, ICD-10 coding tự động từ transcript
-3. **HIS API Integration** — Kết nối HIS qua HL7 FHIR standard, write-back tự động sau khi bác sĩ approve
+3. **HIS API (Application Programming Interface) Integration** — Kết nối HIS qua HL7 FHIR (Health Level Seven Fast Healthcare Interoperability Resources) standard, write-back tự động sau khi bác sĩ approve
 
 **Sản phẩm đã xây dựng:**
 - MVP demo end-to-end: ghi âm → transcript → SOAP note → hiển thị để bác sĩ duyệt
@@ -104,7 +104,7 @@ Fine-tune (Tháng 6–9):
 
 ### 1.6 Tại sao chủ đề này phù hợp để phân tích Deployment & Cost?
 
-- **Dữ liệu cực kỳ nhạy cảm** (PHI): buộc phải phân tích deployment nghiêm túc
+- **Dữ liệu cực kỳ nhạy cảm** (PHI — Protected Health Information): buộc phải phân tích deployment nghiêm túc
 - **Volume dự đoán được**: lịch khám cố định → ước lượng traffic chính xác
 - **Chi phí nhiều lớp**: token, STT, storage, compliance, human review
 - **Hệ quả lỗi cao**: sai bệnh án → ảnh hưởng trực tiếp đến bệnh nhân
@@ -148,7 +148,7 @@ Fine-tune (Tháng 6–9):
 - Audio xóa sau **24 giờ** kể từ khi bệnh án được ký duyệt
 - Mã hóa **AES-256** at rest và in transit
 - Audit log **immutable**, lưu tối thiểu **10 năm**
-- FPT.AI STT API: ký **Data Processing Agreement (DPA)** ràng buộc pháp lý (xem mục 3.4)
+- FPT.AI STT API: ký **Data Processing Agreement (DPA — Thỏa thuận xử lý dữ liệu)** ràng buộc pháp lý (xem mục 3.4)
 
 #### Ràng buộc 2: HIS Integration & Approval Workflow
 
@@ -159,7 +159,7 @@ Fine-tune (Tháng 6–9):
 
 #### Ràng buộc 3: Uptime & Clinical Availability
 
-- **SLA 99.9% uptime** trong giờ khám (7h–20h)
+- **SLA 99.9% uptime** trong giờ khám (Thứ 2–Thứ 6: 8h–12h, 13h–17h; Thứ 7: 8h–12h)
 - Downtime > 5 phút trong giờ cao điểm = ảnh hưởng lâm sàng
 - Fallback rõ ràng: tệ nhất là nhập tay như cũ, không được tắc nghẽn
 - Latency: **< 30 giây** từ kết thúc hội thoại đến hiển thị draft
@@ -353,7 +353,7 @@ Bác sĩ review → ký duyệt → lưu vào HIS
 
 ---
 
-## 4. Cost Analysis — MVP & Growth
+## 4. Cost Analysis — Minimum Viable Product (MVP) & Growth
 
 ### 4.1 Giả định đầu vào
 
@@ -626,14 +626,14 @@ Bác sĩ **luôn biết trạng thái hệ thống**. Workflow không bao giờ 
 
 | Metric | Target | Alert threshold |
 |---|---|---|
-| STT latency P95 | < 45 giây / 15-phút audio | > 90 giây |
-| LLM latency P95 | < 20 giây | > 40 giây |
-| End-to-end latency P95 | < 30 giây | > 60 giây |
+| STT latency P95 (95th Percentile) | < 45 giây / 15-phút audio | > 90 giây |
+| LLM latency P95 (95th Percentile) | < 20 giây | > 40 giây |
+| End-to-end latency P95 (95th Percentile) | < 30 giây | > 60 giây |
 | API error rate | < 0.5% | > 2% |
 | SOAP note accuracy (sampling) | > 85% | < 80% |
 | **Tên thuốc accuracy (critical)** | **> 98%** | **< 95%** |
 | HIS write-back success rate | > 99.9% | < 99% |
-| System uptime (7h–20h) | > 99.9% | < 99.5% |
+| System uptime (T2–T6: 8h–12h, 13h–17h; T7: 8h–12h) | > 99.9% | < 99.5% |
 | Fallback detection time | < 10 giây | > 15 giây |
 | Provider switch time | < 3 giây | > 5 giây |
 | Consent completion rate | > 95% | < 90% |
@@ -717,15 +717,15 @@ SOAP Note: Đỏ = phải xác nhận | Vàng = cần chú ý | Xanh = đã vali
 ### 7.1 Lộ trình mở rộng 3 năm
 
 ```
-2026 — Phase 1: MVP & Validation
+2026 — Phase 1: MVP (Minimum Viable Product) & Validation
   1 bệnh viện (Vinmec Times City) | 50 bác sĩ | 500 ca/ngày
-  KPI: Giảm 25% thời gian nhập liệu | NPS bác sĩ > 7/10
+  KPI (Key Performance Indicator): Giảm 25% thời gian nhập liệu | NPS (Net Promoter Score) bác sĩ > 7/10
   Tech milestone: WER thuật ngữ y tế < 15% sau vocabulary boost
 
 2027 — Phase 2: Scale & Specialization
   5 bệnh viện | Tim mạch, Nhi, Sản | 2.500 ca/ngày
   Self-hosted STT fine-tuned | Tích hợp PACS, Lab
-  KPI: ROI dương | Chi phí/ca < $0.40
+  KPI: ROI (Return on Investment) dương | Chi phí/ca < $0.40
 
 2028 — Phase 3: AI-Augmented Clinical Intelligence
   11 bệnh viện + license model cho bệnh viện tư VN và SEA
